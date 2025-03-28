@@ -1,12 +1,7 @@
 const express = require('express');
 const router = express.Router();
+const { login } = require('../../controllers/v1/auth');
 
-router.post('/login', (_req, res) => {
-    res.send('login page')
-})
-
-router.delete('/logout', (_req, res) => {
-    res.send('logout page')
-})
+router.post('/login', login)
 
 module.exports = router;
