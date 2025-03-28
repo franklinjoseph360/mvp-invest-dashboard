@@ -1,0 +1,22 @@
+{
+  "child_001": [
+    {
+      "symbol": "AAPL",
+      "name": "Apple",
+      "logoUrl": "/logos/apple.png",
+      "funFact": "Apple sells over 1.5 billion devices worldwide."
+    },
+    {
+      "symbol": "NKE",
+      "name": "Nike",
+      "logoUrl": "/logos/nike.png",
+      "funFact": "Nike produces over 780 million pairs of shoes each year."
+    },
+    {
+      "symbol": "TSLA",
+      "name": "Tesla",
+      "logoUrl": "/logos/tesla.png",
+      "funFact": "Tesla’s Model Y was the world’s best-selling car in 2023."
+    }
+  ]
+}
