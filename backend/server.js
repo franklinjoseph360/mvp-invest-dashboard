@@ -21,6 +21,12 @@ async function startServer() {
         // backend routes
         initRoutes(app);
 
+        // Front-end routes
+        app.use('/app/assets', express.static(path.join(__dirname, '../frontend/dist/assets')));
+        app.get('/app/*', (req, res) => {
+            res.sendFile(path.join(__dirname, '../frontend/dist/index.html'));
+        });
+
         app.listen(PORT, () => {
             console.log(`Server is running on http://localhost:${PORT}`);
         });
