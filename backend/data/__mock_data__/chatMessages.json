@@ -1,0 +1,16 @@
+{
+  "fam_001": [
+    {
+      "senderId": "parent_001",
+      "role": "Parent",
+      "message": "Hey Sophie, your portfolio went up this month!",
+      "timestamp": "2025-03-20T08:35:00Z"
+    },
+    {
+      "senderId": "child_001",
+      "role": "Child",
+      "message": "Yay! What does that mean?",
+      "timestamp": "2025-03-20T08:36:00Z"
+    }
+  ]
+}

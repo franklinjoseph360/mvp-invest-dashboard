@@ -1,0 +1,9 @@
+{
+  "fam_001": {
+    "members": [
+      { "userId": "parent_001", "role": "Parent", "name": "Mum" },
+      { "userId": "co_parent_001", "role": "Co-Parent", "name": "Dad" },
+      { "userId": "child_001", "role": "Child", "name": "Sophie" }
+    ]
+  }
+}

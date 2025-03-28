@@ -1,0 +1,11 @@
+{
+  "child_001": {
+    "portfolioValue": 3200.00,
+    "monthlyChange": 120.00,
+    "historicalValues": [
+      { "date": "2025-01-01", "value": 3000 },
+      { "date": "2025-02-01", "value": 3080 },
+      { "date": "2025-03-01", "value": 3200 }
+    ]
+  }
+}
