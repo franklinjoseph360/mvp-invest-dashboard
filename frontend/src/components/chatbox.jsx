@@ -3,8 +3,19 @@ import axios from 'axios';
 import styled from 'styled-components';
 
 const Container = styled.div`
-  max-width: 600px;
-  margin-top: 2rem;
+  position: fixed;
+  right: 2rem;
+  bottom: 2rem;
+  width: 350px;
+  max-height: 500px;
+  background: #242424;
+  border: 1px solid #ccc;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  z-index: 1000;
 `;
 
 const Messages = styled.div`
@@ -110,7 +121,7 @@ const ChatBox = ({ familyId, userId, role }) => {
         <Container>
             <h3>Family Group Chat</h3>
             <Messages>
-                {messages?.length && messages.map((msg, i) => {
+                {messages.map((msg, i) => {
                     const time = new Date(msg.timestamp).toLocaleTimeString([], {
                         hour: '2-digit',
                         minute: '2-digit',
@@ -124,9 +135,6 @@ const ChatBox = ({ familyId, userId, role }) => {
                         </Bubble>
                     )
                 })}
-                {!messages?.length &&
-                    <strong>No Chat history</strong>
-                }
                 <div ref={messagesEndRef} />
             </Messages>
 
