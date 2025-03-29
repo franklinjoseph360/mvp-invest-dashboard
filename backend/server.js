@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const path = require('path');
+const http = require('http');
 const cookieParser = require('cookie-parser');
 
 const PORT = process.env.PORT || 3000;
@@ -10,6 +11,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 const { connectToRedis } = require('./services/redis');
+const { setupWebSocketServer } = require('./services/chat')
 const initRoutes  = require('./routes');
 
 async function startServer() {
@@ -29,8 +31,12 @@ async function startServer() {
             res.sendFile(path.join(__dirname, '../frontend/dist/index.html'));
         });
 
-        app.listen(PORT, () => {
-            console.log(`Server is running on http://localhost:${PORT}`);
+        // Chat websocket server
+        const server = http.createServer(app);
+        setupWebSocketServer(server, redisClient);
+    
+        server.listen(PORT, () => {
+          console.log(`Server + WebSocket running at http://localhost:${PORT}`);
         });
     } catch (err) {
         console.error(err);
