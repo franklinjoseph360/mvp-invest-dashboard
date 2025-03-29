@@ -92,11 +92,19 @@ const Dashboard = () => {
     const isChild = role === 'Child';
     const isParent = role === 'Parent';
 
-    const parsedHistory = portfolio?.history?.map((h) => JSON.parse(h)) || [];
+    const parsedHistory = portfolio?.history?.length ? portfolio?.history
+        .map((a) => JSON.parse(a) || []) : []
+    
+    const sortedHistory = [...(parsedHistory || [])].sort((a, b) => {
+        return new Date(b.date) - new Date(a.date);
+    });
 
     return (
         <Wrapper>
-            <Heading>Welcome, {name}</Heading>
+            <div>
+                <Heading>Welcome, {name}</Heading>
+                <SubHeading>Role, {role}</SubHeading>
+            </div>
 
             {isChild && (
                 <>
@@ -134,7 +142,7 @@ const Dashboard = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {parsedHistory.map((entry, i) => (
+                            {sortedHistory?.map((entry, i) => (
                                 <tr key={i}>
                                     <Td>{entry.date}</Td>
                                     <Td>${entry.value}</Td>
