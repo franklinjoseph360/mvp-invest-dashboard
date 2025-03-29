@@ -12,7 +12,8 @@ async function loadData(redis) {
             await redis.hset(`user:${userId}`, {
                 familyId,
                 name,
-                role
+                role,
+                userId
             });
             await redis.sadd(`familyGroup:${familyId}:members`, userId)
             await redis.hset(`login:${userId}`, {
