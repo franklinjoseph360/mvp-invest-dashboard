@@ -92,6 +92,18 @@ This will:
 - Connect to Redis
 - Start the WebSocket server
 
+### Parent/Co-parent view
+ - Go to `http://localhost:3000/app/login`
+ - username & password: [same as the id]
+ - eg: username: parent_001 | password: parent_001
+ - This will automatically redirect you to `http://localhost:3000/app/dashboard`
+
+### Child view
+ - Go to `http://localhost:3000/app/login`
+ - username & password: [same as the id]
+ - eg: username: child_001 | password: child_001
+ - This will automatically redirect you to `http://localhost:3000/app/dashboard`
+
 ---
 
 ## 🔪 Development Tips
@@ -132,19 +144,5 @@ npx nodemon server.js
 
 ---
 
-## 📷 Screenshots
-
-> _(Add screenshots of the dashboard and chat interface here)_
-
----
-
-## 📍 License
-
-MIT License
-
----
-
-### 🤝 Contributing
-
-Pull requests are welcome. Let’s build something fun together!
+## Thank you
 
