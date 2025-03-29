@@ -18,6 +18,12 @@ const login = async (req, res) => {
         role,
     }, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
 
+    res.cookie('token', token, {
+        httpOnly: true,
+        secure: false,
+        maxAge: 3600 * 1000,
+    });
+
     return res.json({
         message: 'Login successful',
         token,
@@ -26,6 +32,26 @@ const login = async (req, res) => {
     });
 };
 
+
+const authorize = (req, res) => {
+    const token = req.cookies.token;
+    if (!token) return res.status(401).json({ error: 'Unauthorized' });
+  
+    try {
+      const decoded = jwt.verify(token, JWT_SECRET);
+      return res.json({ userId: decoded.userId, role: decoded.role });
+    } catch (err) {
+      return res.status(403).json({ error: 'Invalid token' });
+    }
+  };
+  
+const logout = (_req, res) => {
+    res.clearCookie('token');
+    res.json({ message: 'Logged out successfully' });
+}; 
+
 module.exports = {
-    login
+    login,
+    authorize,
+    logout
 }
