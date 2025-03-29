@@ -1,11 +1,13 @@
 const express = require('express');
 const app = express();
 const path = require('path');
+const cookieParser = require('cookie-parser');
 
 const PORT = process.env.PORT || 3000;
 const REDIS_PORT = process.env.REDIS_PORT || 6379;
 
 app.use(express.json());
+app.use(cookieParser());
 
 const { connectToRedis } = require('./services/redis');
 const initRoutes  = require('./routes');
