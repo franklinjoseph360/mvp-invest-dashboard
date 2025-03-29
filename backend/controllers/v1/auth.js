@@ -34,21 +34,16 @@ const login = async (req, res) => {
 
 
 const authorize = (req, res) => {
-    const token = req.cookies.token;
-    if (!token) return res.status(401).json({ error: 'Unauthorized' });
-  
-    try {
-      const decoded = jwt.verify(token, JWT_SECRET);
-      return res.json({ userId: decoded.userId, role: decoded.role });
-    } catch (err) {
-      return res.status(403).json({ error: 'Invalid token' });
-    }
-  };
-  
+    if (!req.user) return res.status(401).json({ error: 'Unauthorized' });
+
+    const { userId, role } = req.user;
+    return res.json({ userId, role });
+};
+
 const logout = (_req, res) => {
     res.clearCookie('token');
     res.json({ message: 'Logged out successfully' });
-}; 
+};
 
 module.exports = {
     login,
