@@ -1,8 +1,7 @@
-const getChildUserId = async (redis, userId) => {
+const getUserIdByRole = async (redis, userId, role) => {
     const userDetails = await redis.hgetall(`user:${userId}`)
 
-    const { familyId, role } = userDetails;
-    if (role != 'Parent') return null;
+    const { familyId } = userDetails;
 
     const memberIds = await redis.smembers(`familyGroup:${familyId}:members`);
     const memberData = await Promise.all(
@@ -10,19 +9,23 @@ const getChildUserId = async (redis, userId) => {
     );
 
     // Filter by role
-    const children = memberData.filter(member => member.role === 'Child');
-    if (!children?.length) return null;
+    const user = memberData.filter(member => member.role === role);
+    if (!user?.length) return null;
 
-    return children[0].userId;
+    return user[0].userId
 }
+
 const dashboard = async (req, res) => {
     if (!req.user) return res.status(401).json({ error: 'Unauthorized' });
 
-    const { userId, role } = req.user;
+    const { userId, role, familyId } = req.user;
     const redis = req.app.locals.redis;
 
     let dashboardUser = await redis.hgetall(`user:${userId}`);
-    const portfolioUserId = role === 'Child' ? userId : await getChildUserId(redis, userId);
+    
+    let portfolioUserId = userId;
+
+    portfolioUserId = role === 'Child' ? userId : await getUserIdByRole(redis, userId, 'Child');;
 
     if (portfolioUserId === null) return res.status(401).json({ error: 'Portfolio not found for user' });
 
@@ -34,6 +37,11 @@ const dashboard = async (req, res) => {
     const investmentSymbols = await redis.lrange(`investment:${portfolioUserId}:symbol`, 0, -1);
     const investmentPromises = investmentSymbols.map(async (investmentSymbol) => redis.hgetall(`investment:${portfolioUserId}:${investmentSymbol}`))
     const investments = await Promise.all(investmentPromises);
+
+    const chatIds = {
+        senderId: userId,
+        familyId
+    }
     
 
     res.json({
@@ -44,6 +52,9 @@ const dashboard = async (req, res) => {
             history,
             investments,
         },
+        chat: {
+            ...chatIds
+        }
     })
 
 }
