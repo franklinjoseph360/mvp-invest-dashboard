@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
+import ChatBox from '../components/chatbox';
 
 const Wrapper = styled.div`
     display: flex;
@@ -94,7 +95,7 @@ const Dashboard = () => {
 
     const parsedHistory = portfolio?.history?.length ? portfolio?.history
         .map((a) => JSON.parse(a) || []) : []
-    
+
     const sortedHistory = [...(parsedHistory || [])].sort((a, b) => {
         return new Date(b.date) - new Date(a.date);
     });
@@ -182,6 +183,15 @@ const Dashboard = () => {
                     </LineChart>
                 </ResponsiveContainer>
             </ChartContainer>
+            {dashboardData?.chat && (
+                <>
+                    <ChatBox
+                        familyId={dashboardData.chat.familyId}
+                        userId={dashboardData.chat.senderId}
+                        role={dashboardData.role}
+                    />
+                </>
+            )}
         </Wrapper>
     );
 };

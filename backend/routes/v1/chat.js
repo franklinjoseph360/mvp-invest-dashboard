@@ -3,7 +3,7 @@ const { authorizeUser } = require('../../middlewares/authorize');
 const { getChatMessages, postMessages } = require('../../controllers/v1/chat');
 const router = express.Router();
 
-router.get('/:familyId/:userId/:receiverId', authorizeUser, getChatMessages);
-router.post('/:familyId/:userId/:receiverId', authorizeUser, postMessages);
+router.get('/:familyId/:userId/', authorizeUser, getChatMessages);
+router.post('/:familyId/:userId/', authorizeUser, postMessages);
 
 module.exports = router;

@@ -12,10 +12,10 @@ const login = async (req, res) => {
     if (!user || user !== password) {
         return res.status(401).json({ error: 'Invalid credentials' });
     }
-    const role = await redis.hget(`user:${username}`, 'role')
+    const role = await redis.hgetall(`user:${username}`)
     const token = jwt.sign({
         userId: username,
-        role,
+        ...role,
     }, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
 
     res.cookie('token', token, {
@@ -36,8 +36,7 @@ const login = async (req, res) => {
 const authorize = (req, res) => {
     if (!req.user) return res.status(401).json({ error: 'Unauthorized' });
 
-    const { userId, role } = req.user;
-    return res.json({ userId, role });
+    return res.json({ ...req.user });
 };
 
 const logout = (_req, res) => {
