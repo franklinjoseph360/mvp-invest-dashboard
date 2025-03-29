@@ -20,20 +20,22 @@ const dashboard = async (req, res) => {
     const { userId, role } = req.user;
     const redis = req.app.locals.redis;
 
+    let dashboardUser = await redis.hgetall(`user:${userId}`);
+
     const portfolioUserId = role === 'Child' ? userId : await getChildUserId(redis, userId);
     if (portfolioUserId === null) return res.status(401).json({ error: 'Portfolio not found for user' });
 
-    let portfolio = await redis.hgetall(`portfolio:${portfolioUserId}`)
-    const history = await redis.lrange(`portfolio:${portfolioUserId}:history`, 0, -1)
+    let portfolioUser = portfolioUserId === userId ? dashboardUser : await redis.hgetall(`user:${portfolioUserId}`);
+    let portfolio = await redis.hgetall(`portfolio:${portfolioUserId}`);
+    const history = await redis.lrange(`portfolio:${portfolioUserId}:history`, 0, -1);
     const investmentSymbols = await redis.lrange(`investment:${portfolioUserId}:symbol`, 0, -1);
     const investmentPromises = investmentSymbols.map(async (investmentSymbol) => redis.hgetall(`investment:${portfolioUserId}:${investmentSymbol}`))
     const investments = await Promise.all(investmentPromises);
 
     res.json({
-        userId,
-        portfolioUserId,
-        role,
+        ...dashboardUser,
         portfolio: {
+            ...portfolioUser,
             ...portfolio,
             history,
             investments,
